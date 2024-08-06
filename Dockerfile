@@ -1,27 +1,29 @@
-# Use an official Node.js runtime as a parent image
-FROM node:14
+tage 1: Build the React app
+FROM node:14 as build
 
-# Set the working directory in the container
+# Set the working directory
 WORKDIR /app
 
-# Copy package.json and package-lock.json into the container
-COPY package*.json ./
+# Copy package.json and package-lock.json
+COPY my-react-app/package*.json ./
 
 # Install dependencies
 RUN npm install
 
-# Copy the rest of the application code into the container
-COPY . .
+# Copy the entire app source
+COPY my-react-app/ .
 
-# Build the app for production
+# Build the React app for production
 RUN npm run build
 
-# Install a simple HTTP server to serve the production build
-RUN npm install -g serve
+# Stage 2: Serve the React app using a lightweight web server
+FROM nginx:alpine
 
-# Expose the port the app runs on
-EXPOSE 3000
+# Copy the build output to Nginx's html directory
+COPY --from=build /app/build /usr/share/nginx/html
 
-# Command to run the app
-CMD ["serve", "-s", "build"]
+# Expose port 80 to the outside world
+EXPOSE 80
 
+# # Start Nginx when the container starts
+CMD ["nginx", "-g", "daemon off;"]
