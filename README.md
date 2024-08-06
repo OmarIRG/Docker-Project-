@@ -3,6 +3,14 @@ Overview
 This project demonstrates how to create a simple ReactJS application and containerize it using Docker. The solution includes a Dockerfile optimized with multi-stage builds to minimize the final image size.
 This repository contains a simple ReactJS application that is containerized using Docker. The Dockerfile uses multi-stage builds to create a lightweight production-ready image of the React app served by Nginx.
 Available Scripts
+```bash
+# Create a new React app named my-react-app
+npx create-react-app my-react-app
+
+# Navigate into the app directory
+cd my-react-app
+```
+
 In the project directory, you can run:
 
 ### `npm start`
